@@ -1,8 +1,9 @@
 import React from "react";
+import "./control-panel.css"
 
-function ControlPanel(){
+function GameStartPanel(){
     return(
-        <section id="panel-control">
+        <section id="control-panel">
             <form className="form">
                 <h3>Escolha o Nível</h3>
                 <fieldset>
@@ -14,14 +15,26 @@ function ControlPanel(){
                         <option value="3">Avançado (30x16)</option>
                     </select>
                 </fieldset>
-                <button type="button" id="btPlay">Iniciar Jogo</button>
-                <form>
-                    <h1>asdasd</h1>
-                </form>
+                <button type="button" id="btPlay" onClick={onGameStart}>Iniciar Jogo</button>
             </form>
-
         </section>
     );
 }
 
+function GamePlayPanel(){
+    return (
+        <dl>
+            <dt>Tempo de Jogo: </dt>
+            <dd id="gameTime">0</dd>
+        </dl>
+    );
+}
+
+function ControlPanel({gameStarted, onGameStart}){
+    return(
+        <div>
+            {gameStarted ?(GamePlayPanel):(GameStartPanel)}
+        </div>
+    );
+}
 export default ControlPanel;
