@@ -16,7 +16,7 @@ function ControlPanel(){
                 </fieldset>
                 <button type="button" id="btPlay">Iniciar Jogo</button>
                 <form>
-                    //tentativa de comit
+                    <h1>asdasd</h1>
                 </form>
             </form>
 
