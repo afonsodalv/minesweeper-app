@@ -1,40 +1,62 @@
-import React from "react";
-import "./control-panel.css"
+import React, { useState } from "react";
+import "./control-panel.css";
+import HappyFace from "../../img/happy.png";
+import SadFace from "../../img/sad.png";
+import Reset from "../../img/reset.png";
 
-function GameStartPanel(){
-    return(
-        <section id="control-panel">
-            <form className="form">
-                <h3>Escolha o Nível</h3>
-                <fieldset>
-                    <label>Nível:</label>
-                    <select id="btLevel">
-                        <option seleceted value="0">Selecione...</option>
-                        <option value="1">Básico (9x9)</option>
-                        <option value="2">Intermédio (16x16)</option>
-                        <option value="3">Avançado (30x16)</option>
-                    </select>
-                </fieldset>
-                <button type="button" id="btPlay" onClick={onGameStart}>Iniciar Jogo</button>
-            </form>
-        </section>
-    );
-}
+function ControlPanel({ handleGameStarted }) {
+  const [currentImage, setCurrentImage] = useState(HappyFace);
+  const [resetGame, setResetGame] = useState(false);
 
-function GamePlayPanel(){
-    return (
-        <dl>
-            <dt>Tempo de Jogo: </dt>
+  function handleClick() {
+    setCurrentImage(currentImage === HappyFace ? SadFace : HappyFace);
+    if (currentImage === HappyFace) {
+      setResetGame(true);
+    }
+    if (currentImage === SadFace) {
+      setResetGame(false);
+    }
+  }
+
+  function handleReset() {
+    setResetGame(false);
+    setCurrentImage(HappyFace);
+  }
+
+  function handleGoBack() {
+    handleGameStarted();
+    setResetGame(false);
+  }
+
+  return (
+    <div id="back-control-panel">
+      <div id="control-panel">
+        <div id="control-panel-row">
+          <dl className="control-panel-counters">
+            <dd id="points">100</dd>
+          </dl>
+          <div>
+            <button onClick={handleClick} className="img-button">
+              <img src={currentImage} alt="Current state of the game" />
+            </button>
+          </div>
+
+          <dl className="control-panel-counters">
             <dd id="gameTime">0</dd>
-        </dl>
-    );
-}
-
-function ControlPanel({gameStarted, onGameStart}){
-    return(
-        <div>
-            {gameStarted ?(GamePlayPanel):(GameStartPanel)}
+          </dl>
         </div>
-    );
+        {resetGame && (
+          <div id="control-reset">
+            <button onClick={handleReset} className="control-button-reset">
+              <img src={Reset} alt="Reset game" />
+            </button>
+            <button onClick={handleGoBack} className="control-button-level">
+              Mudar de nível
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 export default ControlPanel;
