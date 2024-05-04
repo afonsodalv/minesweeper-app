@@ -4,17 +4,64 @@
     align-items: center;
 }
 
-#control-panel{
+
+.control-panel-easy {
     background-color: rgb(200, 195, 188);
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     font-size: smaller;
     color: black;
-    width: 1000px;
+    width: 180px;
     margin: 15px 0px;
     border: 4px solid;
-}
+  }
 
+  .img-button-easy{
+    width:  50px;
+    height: 50px;
+    margin: 10px;
+  }
+
+  
+  
+  .control-panel-medium {
+    background-color: rgb(200, 195, 188);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    font-size: smaller;
+    color: black;
+    width: 320px;
+    margin: 15px 0px;
+    border: 4px solid;
+  }
+
+  .img-button-medium{
+    width:  80px;
+    height: 80px;
+    margin: 10px;
+  }
+  
+  .control-panel-hard {
+    background-color: rgb(200, 195, 188);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    font-size: smaller;
+    color: black;
+    width: 600px;
+    margin: 15px 0px;
+    border: 4px solid;
+  }
+
+  .img-button-hard{
+    width:  100px;
+    height: 100px;
+    margin: 10px;
+  }
+.img-button-easy img, .img-button-medium img, .img-button-hard img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 #control-panel-row{
     display: flex;
     justify-content: space-between; 
@@ -44,17 +91,8 @@
     padding: 0;
   }
 
-.img-button{
-    width: 100px;
-    height: 100px;
-    margin: 10px;
-}
 
-.img-button img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+
 
 #control-reset{
     display: flex;

@@ -42,16 +42,29 @@ function ControlPanel({ handleGameStarted, numBombs }) {
     }
   }, [resetTimer]);
 
+  function getControlPanelSize(numBombs){
+
+    switch (numBombs) {
+      case 10:
+        return '-easy';
+      case 40:
+        return '-medium';
+      default:
+        return '-hard';
+      
+    }
+  }
+
 
   return (
     <div id="back-control-panel">
-      <div id="control-panel">
+      <div className={`control-panel${getControlPanelSize(numBombs)}`}>
         <div id="control-panel-row">
           <dl className="control-panel-counters">
             <dd id="points">{numBombs}</dd>
           </dl>
           <div>
-            <button onClick={handleClick} className="img-button">
+            <button onClick={handleClick} className={`img-button${getControlPanelSize(numBombs)}`}>
               <img src={currentImage} alt="Current state of the game" />
             </button>
           </div>

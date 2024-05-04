@@ -35,8 +35,12 @@ function App() {
   return (
     <div className="container">
       <Header />
-      {gameStarted ? (<ControlPanel handleGameStarted={handleGameStared} numBombs={numBombs} />) : (<WelcomePanel onGameStart={handleLevelChange} />)}
-      <GamePanel/>
+      {gameStarted ? (
+      <>
+        <ControlPanel handleGameStarted={handleGameStared} numBombs={numBombs} />
+        <GamePanel numBombs={numBombs}/>
+      </>) : (
+      <WelcomePanel onGameStart={handleLevelChange} />)}
       <Footer />
     </div>
   );
