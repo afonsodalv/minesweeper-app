@@ -8,7 +8,7 @@ function App() {
   const [numBombs, setNumBombs] = useState(0);
 
 
-  function handleGameStared(){
+  function handleGameStarted(){
     setGameStarted(!gameStarted);
   }
   
@@ -27,7 +27,7 @@ function App() {
         numBombs=0; break;
     }
 
-    handleGameStared();
+    handleGameStarted();
     setNumBombs(numBombs);
   }
 
@@ -37,7 +37,7 @@ function App() {
       <Header />
       {gameStarted ? (
       <>
-        <ControlPanel handleGameStarted={handleGameStared} numBombs={numBombs} />
+        <ControlPanel handleGameStarted={handleGameStarted} numBombs={numBombs} />
         <GamePanel numBombs={numBombs}/>
       </>) : (
       <WelcomePanel onGameStart={handleLevelChange} />)}
