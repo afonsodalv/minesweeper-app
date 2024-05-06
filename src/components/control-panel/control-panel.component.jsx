@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./control-panel.css";
-import HappyFace from "../../img/happy.png";
-import SadFace from "../../img/sad.png";
-import Reset from "../../img/reset.png";
-import Timer from "../timer/timer.component"
+import Timer from "../timer/timer.component";
+import {HappyFace, SadFace, Reset} from "../../assets";
+
 
 function ControlPanel({ handleGameStarted, numBombs }) {
   const [currentImage, setCurrentImage] = useState(HappyFace);

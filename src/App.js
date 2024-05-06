@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './App.css';
+import './assets/styles/App.css';
 import {Header, Footer, ControlPanel, GamePanel, WelcomePanel} from "./components";
 
 function App() {

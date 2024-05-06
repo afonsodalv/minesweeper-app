@@ -1,5 +1,5 @@
 import React from "react"
-import Square from "../../square/square.component";
+import {Square} from "../../components";
 
 
 function GamePanel({numBombs}){
