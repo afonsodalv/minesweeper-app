@@ -6,12 +6,17 @@ function App() {
 
   const  [gameStarted, setGameStarted]=useState(false);
   const [numBombs, setNumBombs] = useState(0);
+  const [gameKey, setGameKey] = useState(0);
 
 
   function handleGameStared(){
     setGameStarted(!gameStarted);
   }
   
+  function resetGameKey() {
+    setGameKey(prevKey => prevKey + 1);
+  }
+
   function handleLevelChange(level){
 
     let numBombs;
@@ -37,8 +42,8 @@ function App() {
       <Header />
       {gameStarted ? (
       <>
-        <ControlPanel handleGameStarted={handleGameStared} numBombs={numBombs} />
-        <GamePanel numBombs={numBombs}/>
+        <ControlPanel handleGameStarted={handleGameStared} numBombs={numBombs} onResetGameKey={resetGameKey}/>
+        <GamePanel numBombs={numBombs} key={gameKey}/>
       </>) : (
       <WelcomePanel onGameStart={handleLevelChange} />)}
       <Footer />

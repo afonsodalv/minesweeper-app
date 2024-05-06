@@ -12,12 +12,18 @@
     border: 1px solid blue;
   }
 
-  .btInit {
+ .square-btInit {
     width: 16px;
     height: 16px;
     object-fit: cover;
 }
-
-.hidden {
-  display: none;
+.square-flag{
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+}
+.square-question{
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
 }
