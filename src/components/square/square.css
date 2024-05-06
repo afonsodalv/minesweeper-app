@@ -17,3 +17,7 @@
     height: 16px;
     object-fit: cover;
 }
+
+.hidden {
+  display: none;
+}

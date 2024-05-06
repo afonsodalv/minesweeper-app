@@ -4,7 +4,7 @@ import Timer from "../timer/timer.component";
 import {HappyFace, SadFace, Reset} from "../../assets";
 
 
-function ControlPanel({ handleGameStarted, numBombs }) {
+function ControlPanel({ handleGameStarted, numBombs}) {
   const [currentImage, setCurrentImage] = useState(HappyFace);
   const [resetGame, setResetGame] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(true);
