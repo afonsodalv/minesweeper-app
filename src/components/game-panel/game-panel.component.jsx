@@ -1,8 +1,8 @@
-import React, {useState} from "react"
+import React from "react"
 import {Square} from "../../components";
 
 
-function GamePanel({numBombs}){
+function GamePanel({numBombs, gameActive}){
 
 
     const boardSize = getBoardSize(numBombs);
@@ -25,7 +25,7 @@ function GamePanel({numBombs}){
     for (let i = 0; i < boardSize.cols; i++) {
         const row = [];
         for (let j = 0; j < boardSize.rows; j++) {
-          row.push(<Square key={`${i}-${j}`} />);
+          row.push(<Square gameActive={gameActive} key={`${i}-${j}`} />);
         }
         board.push(<div key={i}>{row}</div>);
       }

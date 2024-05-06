@@ -2,40 +2,50 @@ import React, { useState } from "react";
 import "./square.css";
 import {SadFace, Flag, Reset} from "../../assets";
 
-function Square(){
+function Square({gameActive}){
 
     const [clicked, setClicked] = useState(false);
-    const [x, setX] = useState(null);
+    const [x, setX] = useState(3);
 
     function handleLeftClick(){
-        console.log('Esq');
+        if (!gameActive) return;
         setClicked(true);
-        setX(0);
+
+        if(x===3)
+            setX(0);
     }
 
     function handleRightClick(event){
+        if (!gameActive) return;
         event.preventDefault();
-        console.log('dir');
         setClicked(true);
 
-        if(x===1)
-            setX(2);
-        else
-            setX(1);
+        switch(x){
+            case 0:
+                return;
+            case 1:
+                setX(2);break;
+            case 2:
+                setX(3);break;
+            default:
+                setX(1);break;            
+        }
     }
 
     function getClass(x){
-        if(x === 0)
-            return '-btInit'
-        if(x === 1)
-            return '-flag'
-        if(x===2)
-            return '-question'
+        switch(x){
+            case 1:
+                return '-flag';
+            case 2:
+                return '-question';
+            default:
+                return '-blank';
+        }
     }
 
     return (
         <div className='square-blank' data-logo="test" onClick={handleLeftClick} onContextMenu={handleRightClick}>
-            {clicked && (
+            {clicked && x!==3 && (
             <img 
             src={x === 1 ? Flag : x === 2 ? Reset : SadFace}
                 className={`square${getClass(x)}`}
