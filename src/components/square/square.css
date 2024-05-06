@@ -11,3 +11,9 @@
     background-color: gray;
     border: 1px solid blue;
   }
+
+  .btInit {
+    width: 16px;
+    height: 16px;
+    object-fit: cover;
+}
