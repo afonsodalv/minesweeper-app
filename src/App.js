@@ -12,7 +12,7 @@ function App() {
       setGameActive(false);
   }
 
-  function handleGameStared(){
+  function handleGameStarted(){
     setGameStarted(!gameStarted);
     setGameActive(true);
   }
@@ -33,7 +33,8 @@ function App() {
         setNumBombs(99); break;
     }
 
-    handleGameStared();
+
+    handleGameStarted();
   }
 
 
@@ -42,7 +43,7 @@ function App() {
       <Header />
       {gameStarted ? (
       <>
-        <ControlPanel handleGameStarted={handleGameStared} numBombs={numBombs} onResetGameKey={resetGameKey} handleGameEnd={handleGameEnd}/>
+        <ControlPanel handleGameStarted={handleGameStarted} numBombs={numBombs} onResetGameKey={resetGameKey} handleGameEnd={handleGameEnd}/>
         <GamePanel numBombs={numBombs} gameActive={gameActive} key={gameKey}/>
       </>) : (
       <WelcomePanel onGameStart={handleLevelChange} />)}
