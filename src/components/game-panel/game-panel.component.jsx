@@ -1,13 +1,15 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {Square} from "../../components";
 import { getGameSettings } from "../../helpers";
 
 
-function GamePanel({numBombs, gameActive}){
+
+function GamePanel({numBombs, gameActive, handleGameEnd}){
   // const boardSize = getBoardSize(numBombs);
   const boardSize = getGameSettings(numBombs);
   const bombs = generateBombs(boardSize, numBombs);
   const board = [];
+  
 
   const [squares, setSquares] = useState(3);
   console.log(squares);
@@ -30,11 +32,22 @@ function GamePanel({numBombs, gameActive}){
     return bombs;
   }
 
+  function endGameBoard(){
+   // handleGameEnd();
+    for(let i=0; i<boardSize.cols; i++){
+      for (let j = 0; j < boardSize.rows; j++){
+        if(bombs.has(`${i}-${j}`))
+            console.log('k');
+      }
+    }
+  }
+
+
   for (let i = 0; i < boardSize.cols; i++) {
     const row = [];
     for (let j = 0; j < boardSize.rows; j++) {
       let isBomb = bombs.has(`${i}-${j}`);
-      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} id={`${i}-${j}`} isBomb={isBomb} cellType={'init'} bombs={bombs} getSquare={getSquare} setSquare={setSquare}  />);
+      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} id={`${i}-${j}`} isBomb={isBomb} cellType={'init'} bombs={bombs} getSquare={getSquare} setSquare={setSquare} endGameBoard={endGameBoard}/>);
         }
         board.push(<div key={i}>{row}</div>);
       }

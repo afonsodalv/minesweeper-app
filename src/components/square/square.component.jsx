@@ -5,10 +5,11 @@ import {Sprite} from '../../assets';
 import { countAdjacentBombs, getAdjacentSquares } from "../../helpers";
 
 
-function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare}){
+function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare, endGameBoard, gameEnded}){
 
     const getCellBackground = (cellType) => {
         let background, zoom;
+
         if (typeof cellType === 'number') {
             background = `url(${Sprite}) -${(cellType-1) * 17}px 16px`;
         } else if (cellType === 'init') {
@@ -23,6 +24,7 @@ function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare})
             const nBombs = countAdjacentBombs(row, col, bombs);
             if(isBomb) {
                 background = `url(${Sprite}) -102px -51px`;
+                endGameBoard();
             } else if(nBombs === 0) {
                 background = `url(${Sprite}) -17px -51px`;
                 console.log(nBombs);
@@ -59,7 +61,7 @@ function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare})
     function handleLeftClick(){
         if (!gameActive) return;
         setClicked(true);
-
+       
         if(x!==1)
             setX(0);
     }
