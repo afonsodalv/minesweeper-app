@@ -36,8 +36,10 @@
   }
 
   .img-button-medium{
-    width:  80px;
-    height: 80px;
+    /* width:  80px;
+    height: 80px; */
+    width:  50px;
+    height: 50px;
     margin: 10px;
   }
   
@@ -53,8 +55,10 @@
   }
 
   .img-button-hard{
-    width:  100px;
-    height: 100px;
+    /* width:  100px;
+    height: 100px; */
+    width:  50px;
+    height: 50px;
     margin: 10px;
   }
 .img-button-easy img, .img-button-medium img, .img-button-hard img{
