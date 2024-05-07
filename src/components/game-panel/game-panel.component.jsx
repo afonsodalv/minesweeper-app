@@ -23,7 +23,7 @@ function GamePanel({numBombs, gameActive}){
     const row = [];
     for (let j = 0; j < boardSize.rows; j++) {
       let isBomb = bombs.has(`${i}-${j}`);
-      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} isBomb={isBomb} cellNumber={1} />); // 1 is a placeholder for the cell number
+      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} id={`${i}-${j}`} isBomb={isBomb} cellType={'init'} bombs={bombs}  />); // 1 is a placeholder for the cell number
         }
         board.push(<div key={i}>{row}</div>);
       }
