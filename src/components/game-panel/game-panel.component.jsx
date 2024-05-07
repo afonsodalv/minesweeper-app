@@ -3,7 +3,7 @@ import {Square} from "../../components";
 import { getGameSettings } from "../../helpers";
 
 
-function GamePanel({numBombs}){
+function GamePanel({numBombs, gameActive}){
   // const boardSize = getBoardSize(numBombs);
   const boardSize = getGameSettings(numBombs);
   const bombs = generateBombs(boardSize, numBombs);
@@ -23,16 +23,16 @@ function GamePanel({numBombs}){
     const row = [];
     for (let j = 0; j < boardSize.rows; j++) {
       let isBomb = bombs.has(`${i}-${j}`);
-      row.push(<Square key={`${i}-${j}`} isBomb={isBomb} cellNumber={1} />); // 1 is a placeholder for the cell number
+      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} isBomb={isBomb} cellNumber={1} />); // 1 is a placeholder for the cell number
+        }
+        board.push(<div key={i}>{row}</div>);
+      }
+    
+      return (
+        <div className="game-panel" >
+          {board}
+        </div>
+      );
     }
-    board.push(<div key={i}>{row}</div>);
-  }
-  
-  return (
-    <div className="game-panel" >
-      {board}
-    </div>
-  );
-}
 
 export default GamePanel;

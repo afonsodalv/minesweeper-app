@@ -3,32 +3,38 @@ import './assets/styles/App.css';
 import {Header, Footer, ControlPanel, GamePanel, WelcomePanel} from "./components";
 
 function App() {
-
-  const  [gameStarted, setGameStarted]=useState(false);
+  const [gameActive, setGameActive]=useState(true);
+  const [gameStarted, setGameStarted]=useState(false);
   const [numBombs, setNumBombs] = useState(0);
+  const [gameKey, setGameKey] = useState(0);
 
+  function handleGameEnd(){
+      setGameActive(false);
+  }
 
   function handleGameStarted(){
     setGameStarted(!gameStarted);
+    setGameActive(true);
   }
   
-  function handleLevelChange(level){
+  function resetGameKey() {
+    setGameKey(prevKey => prevKey + 1);
+    setGameActive(true);
+  }
 
-    let numBombs;
+  function handleLevelChange(level){
 
     switch(level){
       case 1:
-        numBombs=10; break;
+        setNumBombs(10); break;
       case 2:
-        numBombs=40; break;
-        case 3:
-          numBombs=99; break;
+        setNumBombs(40); break;
       default:
-        numBombs=0; break;
+        setNumBombs(99); break;
     }
 
+
     handleGameStarted();
-    setNumBombs(numBombs);
   }
 
 
@@ -37,8 +43,8 @@ function App() {
       <Header />
       {gameStarted ? (
       <>
-        <ControlPanel handleGameStarted={handleGameStarted} numBombs={numBombs} />
-        <GamePanel numBombs={numBombs}/>
+        <ControlPanel handleGameStarted={handleGameStared} numBombs={numBombs} onResetGameKey={resetGameKey} handleGameEnd={handleGameEnd}/>
+        <GamePanel numBombs={numBombs} gameActive={gameActive} key={gameKey}/>
       </>) : (
       <WelcomePanel onGameStart={handleLevelChange} />)}
       <Footer />

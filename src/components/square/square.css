@@ -12,54 +12,19 @@
     border: 1px solid blue;
   }
 
-  .btInit {
+ .square-btInit {
     width: 16px;
     height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -119px -51px;
-  }
-  .btInitial {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") 0px -51px;
-  }
 
-  .cell-1 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") 0px 16px;
-  }
-  .cell-2 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -17px 16px;
-  }
-  .cell-3 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -34px 16px;
-  }
-  .cell-4 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -51px 16px;
-  }
-  .cell-5 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -68px 16px;
-  }
-  .cell-6 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -85px 16px;
-  }
-  .cell-7 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -102px 16px;
-  }
-  .cell-8 {
-    width: 16px;
-    height: 16px;
-    background: url("../../assets/images/minesweeper-sprite.png") -119px 16px;
-  }
+    object-fit: cover;
+}
+.square-flag{
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+}
+.square-question{
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+}

@@ -5,7 +5,7 @@ import {HappyFace, SadFace, Reset} from "../../assets";
 import { getGameSettings } from "../../helpers";
 
 
-function ControlPanel({ handleGameStarted, numBombs }) {
+function ControlPanel({ handleGameStarted, numBombs, onResetGameKey, handleGameEnd}) {
   const [currentImage, setCurrentImage] = useState(HappyFace);
   const [resetGame, setResetGame] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(true);
@@ -16,11 +16,13 @@ function ControlPanel({ handleGameStarted, numBombs }) {
     if (currentImage === HappyFace) {
       setResetGame(true);
       setIsTimerActive(false);
+      handleGameEnd();
     }
     if (currentImage === SadFace) {
       setResetGame(false);
       setIsTimerActive(true);
       setResetTimer(true);
+      onResetGameKey();
     }
   }
 
@@ -29,6 +31,7 @@ function ControlPanel({ handleGameStarted, numBombs }) {
     setCurrentImage(HappyFace);
     setIsTimerActive(true);
     setResetTimer(true);
+    onResetGameKey();
   }
 
   function handleGoBack() {
