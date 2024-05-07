@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import "./square.css";
 // import {SadFace, Flag, Reset} from "../../assets";
 import {Sprite} from '../../assets';
-import { countAdjacentBombs } from "../../helpers";
+import { countAdjacentBombs, getAdjacentSquares } from "../../helpers";
 
 
-function Square({gameActive, id, cellType, isBomb, bombs}){
+function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare}){
 
     const getCellBackground = (cellType) => {
         let background, zoom;
@@ -22,9 +22,22 @@ function Square({gameActive, id, cellType, isBomb, bombs}){
             const [row, col] = id.split('-').map(Number);
             const nBombs = countAdjacentBombs(row, col, bombs);
             if(isBomb) {
-                background = `url(${Sprite}) -119px -51px`;
+                background = `url(${Sprite}) -102px -51px`;
             } else if(nBombs === 0) {
                 background = `url(${Sprite}) -17px -51px`;
+                console.log(nBombs);
+                    // // Get all adjacent squares
+                    // const adjacentSquares = getAdjacentSquares(row, col);
+                    // console.log(adjacentSquares);
+                    // for (const {row: adjRow, col: adjCol} of adjacentSquares) {
+                    //     const adjSquare = getSquare(adjRow, adjCol);
+                    //     // If the adjacent square is not clicked yet, click it
+                    //     if (!adjSquare.clicked) {
+                    //         setSquare(adjRow, adjCol, {...adjSquare, cellType: '-clicked'});
+                    //         // Recursively click the adjacent square
+                    //         handleLeftClick(adjRow, adjCol);
+                    //     }   
+                    // }
             } else background = `url(${Sprite}) -${(nBombs-1) * 17}px 16px`;
         // } else if (cellType === 'bomb') {
         //     background = `url(${Sprite}) -119px -51px`;
