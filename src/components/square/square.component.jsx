@@ -5,48 +5,33 @@ import {Sprite} from '../../assets';
 import { countAdjacentBombs, getAdjacentSquares } from "../../helpers";
 
 
-function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare, endGameBoard, gameEnded}){
+
+function Square({gameActive, id, isBomb, bombs}){
+
+    const [cellType, setCellType] = useState('-init');
 
     const getCellBackground = (cellType) => {
         let background, zoom;
 
         if (typeof cellType === 'number') {
             background = `url(${Sprite}) -${(cellType-1) * 17}px 16px`;
-        } else if (cellType === 'init') {
+        } 
+        else if (cellType === '-init') {
             background = `url(${Sprite}) 0px -51px`;
             zoom = '1.5';
-        } else if (cellType === '-flag') {
+        } 
+        else if (cellType === '-flag') {
             background = `url(${Sprite}) -34px -51px`;
-        } else if (cellType === '-question') {
+        } 
+        else if (cellType === '-question') {
             background = `url(${Sprite}) -51px -51px`;
-        } else if (cellType === '-clicked') {
-            const [row, col] = id.split('-').map(Number);
-            const nBombs = countAdjacentBombs(row, col, bombs);
-            if(isBomb) {
-                background = `url(${Sprite}) -102px -51px`;
-                endGameBoard();
-            } else if(nBombs === 0) {
-                background = `url(${Sprite}) -17px -51px`;
-                console.log(nBombs);
-                    // // Get all adjacent squares
-                    // const adjacentSquares = getAdjacentSquares(row, col);
-                    // console.log(adjacentSquares);
-                    // for (const {row: adjRow, col: adjCol} of adjacentSquares) {
-                    //     const adjSquare = getSquare(adjRow, adjCol);
-                    //     // If the adjacent square is not clicked yet, click it
-                    //     if (!adjSquare.clicked) {
-                    //         setSquare(adjRow, adjCol, {...adjSquare, cellType: '-clicked'});
-                    //         // Recursively click the adjacent square
-                    //         handleLeftClick(adjRow, adjCol);
-                    //     }   
-                    // }
-            } else background = `url(${Sprite}) -${(nBombs-1) * 17}px 16px`;
-        // } else if (cellType === 'bomb') {
-        //     background = `url(${Sprite}) -119px -51px`;
-        // } else if (cellType === 'empty') {
-        //     background = `url(${Sprite}) -17px -51px`;
+        else if (cellType === '-bomb') {
+            background = `url(${Sprite}) -102px -51px`;
+        } 
+        else if (cellType === '-clicked') {
+            background = `url(${Sprite}) -17px -51px`;
         }
-        
+
         return {
             width: '16px',
             height: '16px',
@@ -54,16 +39,30 @@ function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare, 
             background,
         };
     };
-    
+
     const [clicked, setClicked] = useState(false);
     const [x, setX] = useState(3);
 
-    function handleLeftClick(){
+
+    function handleLeftClick() {
         if (!gameActive) return;
         setClicked(true);
-       
-        if(x!==1)
+        if(x!==1){
             setX(0);
+        
+            const [row, col] = id.split('-').map(Number);
+            const nBombs = countAdjacentBombs(row, col, bombs);
+            if(isBomb) {
+                setCellType('-bomb');
+            } else if(nBombs === 0) {
+                setCellType('-clicked');
+                // Add your logic for clicking adjacent squares here
+                // clickAdjacentCells(row, col, bombs);
+                
+            } else {
+                setCellType(nBombs);
+            }
+        }   
     }
 
     function handleRightClick(event){
@@ -71,46 +70,19 @@ function Square({gameActive, id, cellType, isBomb, bombs, getSquare, setSquare, 
         event.preventDefault();
         setClicked(true);
 
-        // switch(x){
-        //     case 0:
-        //         return;
-        //     case 1:
-        //         setX(2);break;
-        //     case 2:
-        //         setX(3);break;
-        //     default:
-        //         setX(1);break;            
-        // }
-        if(x && x!==3) setX(x+1);
-        else if(x===3) setX(1);
-    }
-
-    function getClass(x){
-        switch(x){
-            case 0:
-                return '-clicked';
-            case 1:
-                return '-flag';
-            case 2:
-                return '-question';
-            default:
-                return '-blank';
+        if(x && x!==3) {
+            setX(x+1);
+            (x+1) === 2 ? setCellType('-question') : setCellType('-init');
+        } else if(x===3) {
+            setX(1);
+            setCellType('-flag');
         }
     }
 
     return (
-        // <div className='square-blank' data-logo="test" onClick={handleLeftClick} onContextMenu={handleRightClick}>
-        //     {clicked && x!==3 && (
-        //     <img 
-        //     src={x === 1 ? Flag : x === 2 ? Reset : SadFace}
-        //         className={`square${getClass(x)}`}
-        //         alt='square placeholder test'
-        //     />
-        //     )}
-        // </div>
-        <div className='square-blank' style={getCellBackground(cellType)} onClick={handleLeftClick} onContextMenu={handleRightClick}>
+        <div className='square-blank' style={getCellBackground('-init')} onClick={handleLeftClick} onContextMenu={handleRightClick}>
             {clicked && x!==3 && (
-            <div style={getCellBackground(getClass(x))}></div>
+            <div style={getCellBackground(cellType)}></div>
             )}
         </div>
     );

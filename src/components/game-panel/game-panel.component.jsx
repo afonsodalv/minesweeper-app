@@ -22,6 +22,8 @@ function GamePanel({numBombs, gameActive, handleGameEnd}){
     });
   };
 
+
+
   function generateBombs(boardSize, numBombs) {
     let bombs = new Set();
     while (bombs.size < numBombs) {
@@ -47,7 +49,7 @@ function GamePanel({numBombs, gameActive, handleGameEnd}){
     const row = [];
     for (let j = 0; j < boardSize.rows; j++) {
       let isBomb = bombs.has(`${i}-${j}`);
-      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} id={`${i}-${j}`} isBomb={isBomb} cellType={'init'} bombs={bombs} getSquare={getSquare} setSquare={setSquare} endGameBoard={endGameBoard}/>);
+      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} id={`${i}-${j}`} isBomb={isBomb} bombs={bombs}  />);
         }
         board.push(<div key={i}>{row}</div>);
       }
