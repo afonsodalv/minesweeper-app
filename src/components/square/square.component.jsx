@@ -5,12 +5,14 @@ import {Sprite} from '../../assets';
 import { countAdjacentBombs, getAdjacentSquares } from "../../helpers";
 
 
+
 function Square({gameActive, id, isBomb, bombs}){
 
     const [cellType, setCellType] = useState('-init');
 
     const getCellBackground = (cellType) => {
         let background, zoom;
+
         if (typeof cellType === 'number') {
             background = `url(${Sprite}) -${(cellType-1) * 17}px 16px`;
         } 
@@ -23,7 +25,6 @@ function Square({gameActive, id, isBomb, bombs}){
         } 
         else if (cellType === '-question') {
             background = `url(${Sprite}) -51px -51px`;
-        } 
         else if (cellType === '-bomb') {
             background = `url(${Sprite}) -102px -51px`;
         } 
