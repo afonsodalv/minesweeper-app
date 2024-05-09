@@ -5,10 +5,10 @@ import {HappyFace, SadFace, Reset} from "../../assets";
 import { getGameSettings } from "../../helpers";
 
 
-function ControlPanel({ handleGameStarted, numBombs, onResetGameKey, handleGameEnd}) {
+function ControlPanel({ onGameStart, gameStarted, numBombs, onResetGameKey, gameActive ,handleGameEnd, score}) {
   const [currentImage, setCurrentImage] = useState(HappyFace);
   const [resetGame, setResetGame] = useState(false);
-  const [isTimerActive, setIsTimerActive] = useState(true);
+  const [isTimerActive, setIsTimerActive] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
 
   function handleClick() {
@@ -26,18 +26,17 @@ function ControlPanel({ handleGameStarted, numBombs, onResetGameKey, handleGameE
     }
   }
 
-  function handleReset() {
-    setResetGame(false);
-    setCurrentImage(HappyFace);
-    setIsTimerActive(true);
-    setResetTimer(true);
-    onResetGameKey();
-  }
+  useEffect(()=>{
+    if(gameActive){
+        setCurrentImage(HappyFace);
+        setIsTimerActive(true);
+    }
+    else{
+      setCurrentImage(SadFace);
+      setIsTimerActive(false);
+    }
+}, [gameActive]);
 
-  function handleGoBack() {
-    handleGameStarted();
-    setResetGame(false);
-  }
 
   useEffect(() => {
     if (resetTimer) {
@@ -47,10 +46,19 @@ function ControlPanel({ handleGameStarted, numBombs, onResetGameKey, handleGameE
   
   return (
     <div id="back-control-panel">
+      <section id="level-panel">
+        <form className="form">
+            <select>
+                <option type="button" className="welcome-button" onClick={() => onGameStart(1)}>Básico (9x9)</option>
+                <option type="button" className="welcome-button" onClick={() => onGameStart(2)}>Intermédio (16x16)</option>
+                <option type="button" className="welcome-button" onClick={() => onGameStart(3)}>Avançado (30x16)</option>
+             </select>
+        </form>
+        </section>
       <div className={`control-panel${getGameSettings(numBombs).difficulty}`}>
         <div id="control-panel-row">
           <dl className="control-panel-counters">
-            <dd id="points">{numBombs}</dd>
+            <dd id="points">{score}</dd>
           </dl>
           <div>
             <button onClick={handleClick} className={`img-button${getGameSettings(numBombs).difficulty}`}>
@@ -59,19 +67,9 @@ function ControlPanel({ handleGameStarted, numBombs, onResetGameKey, handleGameE
           </div>
 
           <dl className="control-panel-counters">
-            <dd id="gameTime" ><Timer isTimerActive={isTimerActive} reset={resetTimer}/></dd>
+            <dd id="gameTime" ><Timer isTimerActive={gameStarted} reset={resetTimer}/></dd>
           </dl>
         </div>
-        {resetGame && (
-          <div id="control-reset">
-            <button onClick={handleReset} className="control-button-reset">
-              <img src={Reset} alt="Reset game" />
-            </button>
-            <button onClick={handleGoBack} className="control-button-level">
-              Mudar de nível
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

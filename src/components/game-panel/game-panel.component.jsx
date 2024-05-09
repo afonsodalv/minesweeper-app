@@ -1,28 +1,22 @@
-import React, {useState, useEffect} from "react"
+import React, { useState, useEffect }  from "react"
 import {Square} from "../../components";
-import { getGameSettings } from "../../helpers";
+import { getGameSettings, getAdjacentSquares } from "../../helpers";
 
 
-
-function GamePanel({numBombs, gameActive, handleGameEnd}){
-  // const boardSize = getBoardSize(numBombs);
-  const boardSize = getGameSettings(numBombs);
-  const bombs = generateBombs(boardSize, numBombs);
-  const board = [];
+function GamePanel({numBombs, gameActive, handleGameEnd, handleGameScore, handleGameStart}){
   
+  const [boardSize, setBoardSize] = useState(getGameSettings(numBombs));
 
-  const [squares, setSquares] = useState(3);
-  console.log(squares);
-  const getSquare = (row, col) => squares[row][col];
-  const setSquare = (row, col, newValue) => {
-    setSquares(prevSquares => {
-      const newSquares = [...prevSquares];
-      newSquares[row][col] = newValue;
-      return newSquares;
-    });
-  };
+  useEffect(() => {
+    setBoardSize(getGameSettings(numBombs));
+  }, [numBombs]);
+  // const boardSize = getGameSettings(numBombs);
+  console.log(`Bombs: ${numBombs} - Board Size: ${boardSize.rows}, ${boardSize.cols}`);
 
-
+  const [bombs, setBombs] = useState(new Set());
+  useEffect(() => {
+    setBombs(generateBombs(boardSize, numBombs));
+  }, [numBombs, gameActive, boardSize]);
 
   function generateBombs(boardSize, numBombs) {
     let bombs = new Set();
@@ -33,32 +27,88 @@ function GamePanel({numBombs, gameActive, handleGameEnd}){
     }
     return bombs;
   }
+  console.log(`Bombs: ${Array.from(bombs)}`);
 
-  function endGameBoard(){
-   // handleGameEnd();
-    for(let i=0; i<boardSize.cols; i++){
-      for (let j = 0; j < boardSize.rows; j++){
-        if(bombs.has(`${i}-${j}`))
-            console.log('k');
-      }
+  const [clickedBomb, setClickedBomb] = useState(false);
+  useEffect(() => {
+    if (clickedBomb && gameActive) {
+      handleGameEnd();
     }
+  }, [clickedBomb, gameActive, handleGameEnd]);
+  
+
+  const board = Array(boardSize.rows).fill().map(() => Array(boardSize.cols).fill(
+    <Square 
+      gameActive={gameActive} 
+      key={`default-key`} 
+      id={`default-id`} 
+      isBomb={false} 
+      bombs={new Set()}
+      revealed={false}
+      revealSquare={() => {}}
+      setClickedBomb={setClickedBomb}
+    />
+  ));
+  
+  const [revealed, setRevealed] = useState(Array(boardSize.rows).fill().map(() => Array(boardSize.cols).fill(false)));
+  
+  function revealSquare(row, col) {
+
+    const adjacentSquares = getAdjacentSquares(row, col, boardSize.rows, boardSize.cols);
+    console.log(`Adjacent cells: ${adjacentSquares}`);
+    
+    setRevealed(prevState => {
+        const newState = [...prevState];
+        adjacentSquares.forEach((square) => {
+          const [adjRow, adjCol] = square.split('-').map(Number);
+          if (revealed[adjRow][adjCol] === false){
+            newState[adjRow][adjCol] = true;
+          }
+        });
+        return newState;
+      });
+      
+    console.log(`Revealed Arr: ${revealed}`);
   }
 
 
-  for (let i = 0; i < boardSize.cols; i++) {
-    const row = [];
-    for (let j = 0; j < boardSize.rows; j++) {
+
+  for (let i = 0; i < boardSize.rows; i++) {
+    for (let j = 0; j < boardSize.cols; j++) {
       let isBomb = bombs.has(`${i}-${j}`);
-      row.push(<Square gameActive={gameActive} key={`${i}-${j}`} id={`${i}-${j}`} isBomb={isBomb} bombs={bombs}  />);
-        }
-        board.push(<div key={i}>{row}</div>);
-      }
-    
-      return (
-        <div className="game-panel" >
-          {board}
-        </div>
+      board[i][j] = (
+        <Square 
+          gameActive={gameActive} 
+          key={`${i}-${j}`} 
+          id={`${i}-${j}`} 
+          isBomb={isBomb} 
+          bombs={bombs}
+          revealed={revealed[i][j]}
+          revealSquare={revealSquare}
+          setClickedBomb={setClickedBomb}
+          handleGameScore={handleGameScore}
+          handleGameStart={handleGameStart}
+        />
       );
     }
+  }
+
+    
+  return (
+    <div className="game-panel">
+    {/* {board.map((row, i) => (
+      <div key={i}>
+        {row}
+      </div>
+    ))} */}
+    {board[0].map((col, i) => (
+      <div key={i}>
+        {board.map(row => row[i])}
+      </div>
+    ))}
+  </div>
+  
+  );
+}
 
 export default GamePanel;
