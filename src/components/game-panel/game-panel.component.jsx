@@ -3,14 +3,20 @@ import {Square} from "../../components";
 import { getGameSettings, getAdjacentSquares } from "../../helpers";
 
 
-function GamePanel({numBombs, gameActive}){
-  const boardSize = getGameSettings(numBombs);
+function GamePanel({numBombs, gameActive, handleGameEnd}){
+  
+  const [boardSize, setBoardSize] = useState(getGameSettings(numBombs));
+
+  useEffect(() => {
+    setBoardSize(getGameSettings(numBombs));
+  }, [numBombs]);
+  // const boardSize = getGameSettings(numBombs);
   console.log(`Bombs: ${numBombs} - Board Size: ${boardSize.rows}, ${boardSize.cols}`);
 
   const [bombs, setBombs] = useState(new Set());
   useEffect(() => {
     setBombs(generateBombs(boardSize, numBombs));
-  }, [numBombs, gameActive]);
+  }, [numBombs, gameActive, boardSize]);
 
   function generateBombs(boardSize, numBombs) {
     let bombs = new Set();
@@ -22,6 +28,13 @@ function GamePanel({numBombs, gameActive}){
     return bombs;
   }
   console.log(`Bombs: ${Array.from(bombs)}`);
+
+  const [clickedBomb, setClickedBomb] = useState(false);
+  useEffect(() => {
+    if (clickedBomb && gameActive) {
+      handleGameEnd();
+    }
+  }, [clickedBomb, gameActive, handleGameEnd]);
   
 
   const board = Array(boardSize.rows).fill().map(() => Array(boardSize.cols).fill(
@@ -33,6 +46,7 @@ function GamePanel({numBombs, gameActive}){
       bombs={new Set()}
       revealed={false}
       revealSquare={() => {}}
+      setClickedBomb={setClickedBomb}
     />
   ));
   
@@ -71,6 +85,7 @@ function GamePanel({numBombs, gameActive}){
           bombs={bombs}
           revealed={revealed[i][j]}
           revealSquare={revealSquare}
+          setClickedBomb={setClickedBomb}
         />
       );
     }

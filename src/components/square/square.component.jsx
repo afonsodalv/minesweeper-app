@@ -4,7 +4,7 @@ import {Sprite} from '../../assets';
 import { countAdjacentBombs } from "../../helpers";
 
 
-function Square({gameActive, id, isBomb, bombs, revealed, revealSquare}){
+function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb }){
 
     const [cellType, setCellType] = useState('-init');
 
@@ -57,6 +57,7 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare}){
             console.log(`Square component about to call countAdjacentBombs: ${row}, ${col} - ${nBombs} bombs nearby`);
             if(isBomb) {
                 setCellType('-bomb');
+                setClickedBomb(true);
             } else if(nBombs === 0) {
                 setCellType('-clicked');
                 if(!clicked) {

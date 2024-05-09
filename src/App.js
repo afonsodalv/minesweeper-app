@@ -44,7 +44,7 @@ function App() {
       {gameStarted ? (
       <>
         <ControlPanel handleGameStarted={handleGameStarted} numBombs={numBombs} onResetGameKey={resetGameKey} handleGameEnd={handleGameEnd}/>
-        <GamePanel numBombs={numBombs} gameActive={gameActive} key={gameKey}/>
+        <GamePanel numBombs={numBombs} gameActive={gameActive} handleGameEnd={handleGameEnd} key={gameKey}/>
       </>) : (
       <WelcomePanel onGameStart={handleLevelChange} />)}
       <Footer />
