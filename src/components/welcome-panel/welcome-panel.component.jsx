@@ -4,7 +4,7 @@ import "./welcome-panel.css";
 function WelcomePanel({ onGameStart }) {
   return (
     <div id="back-welcome-panel">
-        <section id="welcome-panel">
+        <section id="level-panel">
         <form className="form">
             <h3>Escolha o Nível</h3>
             <div>
