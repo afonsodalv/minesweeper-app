@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './assets/styles/App.css';
 import {Header, Footer, ControlPanel, GamePanel, WelcomePanel} from "./components";
 
@@ -7,23 +7,32 @@ function App() {
   const [gameStarted, setGameStarted]=useState(false);
   const [numBombs, setNumBombs] = useState(0);
   const [gameKey, setGameKey] = useState(0);
-  const [score, setScore] = useState(19);
+  const [score, setScore] = useState(0);
 
-  function handleGameScore(x){
-    if(x===3)  
-      setScore(score-1);
-    if(x===1)
-      setScore(score+1);
-  } 
-
-  function handleGameEnd(){
+  function handleGameEnd(x){
       setGameActive(false);
-      setGameStarted(false);
+  
+      if(x===1)
+        console.log("Ganhou");
+      else
+        console.log("Perdeu");
   }
 
-  function handleGameStart(){
+  const prevGameActiveRef = useRef(gameActive);
+  //foi a forma que consegui para que o Score
+  //fizessse reset quando o jogo recomeçava
+
+useEffect(() => {
+    if (!prevGameActiveRef.current && gameActive) {
+        setScore(numBombs);
+    }
+
+    prevGameActiveRef.current = gameActive;
+}, [gameActive]);
+
+  function handleGameStarted(){
+    setGameStarted(!gameStarted);
     setGameActive(true);
-    setGameStarted(true);
   }
   
   function resetGameKey() {
@@ -33,30 +42,40 @@ function App() {
 
   function handleLevelChange(level){
 
-    let bombs = 0;
     switch(level){
       case 1:
-        bombs = 10; 
+        setNumBombs(10);
+        setScore(10);
         break;
       case 2:
-        bombs = 40; 
+        setNumBombs(40);
+        setScore(40);
         break;
       default:
-        bombs = 99; 
+        setNumBombs(99);
+        setScore(99);
         break;
+
     }
-    
-    setNumBombs(bombs);
-    setScore(bombs);
+    handleGameStarted();
   }
 
+  function handleGameScore(x){
+    if(x===3)  
+      setScore(score-1);
+    if(x===1)
+      setScore(score+1);
+  }
 
   return (
     <div className="container">
       <Header />
-      <ControlPanel onGameStart={handleLevelChange} gameStarted={gameStarted} numBombs={numBombs} onResetGameKey={resetGameKey} handleGameEnd={handleGameEnd} gameActive={gameActive} score={score}/>
-      <GamePanel numBombs={numBombs} gameActive={gameActive} key={gameKey} handleGameEnd={handleGameEnd} handleGameScore={handleGameScore} handleGameStart={handleGameStart}/>
-    
+      {gameStarted ? (
+      <>
+        <ControlPanel score={score} handleGameStarted={handleGameStarted} numBombs={numBombs} onResetGameKey={resetGameKey} handleGameEnd={handleGameEnd} gameActive={gameActive}/>
+        <GamePanel numBombs={numBombs} gameActive={gameActive} handleGameEnd={handleGameEnd} key={gameKey} handleGameScore={handleGameScore}/>
+      </>) : (
+      <WelcomePanel onGameStart={handleLevelChange} />)}
       <Footer />
     </div>
   );

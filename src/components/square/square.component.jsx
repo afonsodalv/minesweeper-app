@@ -4,7 +4,7 @@ import {Sprite} from '../../assets';
 import { countAdjacentBombs } from "../../helpers";
 
 
-function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore, handleGameStart}){
+function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore}){
 
     const [cellType, setCellType] = useState('-init');
 
@@ -46,6 +46,12 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
 
     const [clicked, setClicked] = useState(false);
     const [x, setX] = useState(3);
+    
+
+
+    if (revealed && !clicked) {
+        handleLeftClick();
+    }
 
     useEffect(() => {
         if (!gameActive && isBomb && !clicked) {
@@ -60,44 +66,39 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
 
     }, [gameActive]);
 
-    if (revealed && !clicked) {
-        handleLeftClick();
-    }
-
     function handleLeftClick() {
         if (!gameActive) return;
-        handleGameStart();
         
         if(x!==1){
             setX(0);
             revealed = true;
             const [row, col] = id.split('-').map(Number);
             const nBombs = countAdjacentBombs(row, col, bombs);
-            console.log(`Square component about to call countAdjacentBombs: ${row}, ${col} - ${nBombs} bombs nearby`);
-
+           // console.log(`Square component about to call countAdjacentBombs: ${row}, ${col} - ${nBombs} bombs nearby`);
             if(isBomb) {
                 setCellType('-bomb');
                 setClickedBomb(true);
-                
             } else if(nBombs === 0) {
                 setCellType('-clicked');
+
                 if(!clicked) {
-                    console.log(`Square component about to call reveal square: ${row}, ${col}`);
+                    //console.log(`Square component about to call reveal square: ${row}, ${col}`);
                     setClicked(true);
-                    revealSquare(row, col);
+                    revealSquare(row, col, nBombs);
                 } 
 
             } else {
-                setCellType(nBombs);
+                if(!clicked){
+                    setCellType(nBombs);
+                    revealSquare(row, col, nBombs);
+                }
             }
             setClicked(true);
-            
         }
     }
 
     function handleRightClick(event){
         if (!gameActive) return;
-        handleGameStart();
         event.preventDefault();
 
         if(!clicked && x!==3) {
@@ -107,6 +108,7 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
             setX(1);
             setCellType('-flag');
         }
+
         handleGameScore(x);
     }
 
