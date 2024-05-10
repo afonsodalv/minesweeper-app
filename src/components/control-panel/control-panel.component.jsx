@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./control-panel.css";
 import Timer from "../timer/timer.component";
 import {HappyFace, SadFace, Reset} from "../../assets";
+//import {Sprite} from '../../assets';
 import { getGameSettings } from "../../helpers";
 
 
-function ControlPanel({ onGameStart, gameStarted, numBombs, onResetGameKey, gameActive ,handleGameEnd, score}) {
-  const [currentImage, setCurrentImage] = useState(HappyFace);
+function ControlPanel({ score, handleGameStarted, numBombs, onResetGameKey, handleGameEnd, gameActive}) {
+  const [currentImage, setCurrentImage] = useState(SadFace);
   const [resetGame, setResetGame] = useState(false);
-  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [isTimerActive, setIsTimerActive] = useState(true);
   const [resetTimer, setResetTimer] = useState(false);
 
   function handleClick() {
@@ -26,17 +27,20 @@ function ControlPanel({ onGameStart, gameStarted, numBombs, onResetGameKey, game
     }
   }
 
-  useEffect(()=>{
-    if(gameActive){
-        setCurrentImage(HappyFace);
-        setIsTimerActive(true);
-    }
-    else{
-      setCurrentImage(SadFace);
-      setIsTimerActive(false);
-    }
-}, [gameActive]);
+  function handleReset() {
+    // so trabalha com img reset (painel que aparece quando se clica na cara)
+    setResetGame(false);
+    setCurrentImage(HappyFace);
+    setIsTimerActive(true);
+    setResetTimer(true);
+    onResetGameKey();
+  }
 
+  function handleGoBack() {
+    // so trabalha com botao mudar de nivel (painel que aparece quando se clica na cara)
+    handleGameStarted();
+    setResetGame(false);
+  }
 
   useEffect(() => {
     if (resetTimer) {
@@ -44,17 +48,15 @@ function ControlPanel({ onGameStart, gameStarted, numBombs, onResetGameKey, game
     }
   }, [resetTimer]);
   
+  useEffect(()=>{
+    if(currentImage === HappyFace && !gameActive)
+        setCurrentImage(SadFace);
+    else if(currentImage === SadFace && gameActive)
+      setCurrentImage(HappyFace);
+  }, [gameActive]);
+
   return (
     <div id="back-control-panel">
-      <section id="level-panel">
-        <form className="form">
-            <select>
-                <option type="button" className="welcome-button" onClick={() => onGameStart(1)}>Básico (9x9)</option>
-                <option type="button" className="welcome-button" onClick={() => onGameStart(2)}>Intermédio (16x16)</option>
-                <option type="button" className="welcome-button" onClick={() => onGameStart(3)}>Avançado (30x16)</option>
-             </select>
-        </form>
-        </section>
       <div className={`control-panel${getGameSettings(numBombs).difficulty}`}>
         <div id="control-panel-row">
           <dl className="control-panel-counters">
@@ -67,9 +69,19 @@ function ControlPanel({ onGameStart, gameStarted, numBombs, onResetGameKey, game
           </div>
 
           <dl className="control-panel-counters">
-            <dd id="gameTime" ><Timer isTimerActive={gameStarted} reset={resetTimer}/></dd>
+            <dd id="gameTime" ><Timer isTimerActive={gameActive} reset={resetTimer}/></dd>
           </dl>
         </div>
+        {resetGame && (
+          <div id="control-reset">
+            <button onClick={handleReset} className="control-button-reset">
+              <img src={Reset} alt="Reset game" />
+            </button>
+            <button onClick={handleGoBack} className="control-button-level">
+              Mudar de nível
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
