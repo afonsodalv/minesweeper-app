@@ -14,7 +14,7 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
     setBoardSize(getGameSettings(numBombs));
   }, [numBombs]);
   // const boardSize = getGameSettings(numBombs);
- // console.log(`Bombs: ${numBombs} - Board Size: ${boardSize.rows}, ${boardSize.cols}`);
+  // console.log(`Bombs: ${numBombs} - Board Size: ${boardSize.rows}, ${boardSize.cols}`);
 
  const [bombs, setBombs] = useState(new Set());
  useEffect(() => {
@@ -32,6 +32,7 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
   }
   //console.log(`Bombs: ${Array.from(bombs)}`);
   
+
   let board = [];
   for (let i = 0; i < boardSize.rows; i++) {
     board[i] = [];
@@ -55,9 +56,7 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
   }
   
   
-  
   function flagSquare(id) {
-    // const id = square.target.id;
     if (flags.has(id)) {
       setFlags(prevState => {
         const newState = new Set(prevState);
@@ -79,11 +78,9 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
     const adjacentSquares = getAdjacentSquares(row, col, boardSize.rows, boardSize.cols);
     //console.log(`Adjacent cells: ${adjacentSquares}`);
     setRevealed(prevState => {
-        const newState = [...prevState];
-        if(nBombs>0){
-          newState[row][col] = true;
-        }
-        else{
+      const newState = [...prevState];
+      newState[row][col] = true;
+      if(nBombs===0){
         adjacentSquares.forEach((square) => {
           const [adjRow, adjCol] = square.split('-').map(Number);
           if(flags.has(`${adjRow}-${adjCol}`)) return;
@@ -92,8 +89,8 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
           }
         });
       }
-        return newState;
-      });
+      return newState;
+    });
     //console.log(`Revealed Arr: ${revealed}`);
   }
 
@@ -108,13 +105,8 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
   }, [clickedBomb, gameActive, handleGameEnd]);  
     
 
-
   useEffect(() => {
     const revealedCount = revealed.flat().filter(Boolean).length;
-    console.log("Revealed: " + revealedCount);
-    console.log("Revealed Array: ", revealed);
-    console.log("Number of Bombs: ", numBombs);
-    console.log("");
     if (revealedCount === boardSize.rows * boardSize.cols - numBombs) {
       handleGameEnd(1);
     }
