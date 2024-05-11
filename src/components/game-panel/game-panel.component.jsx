@@ -90,8 +90,6 @@ function GamePanel({numBombs, gameActive, handleGameEnd, handleGameScore}){
     }
   }, [revealed]);
 
-  
-
 
   for (let i = 0; i < boardSize.rows; i++) {
     for (let j = 0; j < boardSize.cols; j++) {

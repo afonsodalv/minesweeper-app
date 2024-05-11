@@ -63,9 +63,9 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
         if(!gameActive && isBomb && cellType === '-flag'){
             setCellType('-flag');
         }
-
     }, [gameActive]);
 
+  
     function handleLeftClick() {
         if (!gameActive) return;
         
@@ -75,6 +75,7 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
             const [row, col] = id.split('-').map(Number);
             const nBombs = countAdjacentBombs(row, col, bombs);
            // console.log(`Square component about to call countAdjacentBombs: ${row}, ${col} - ${nBombs} bombs nearby`);
+
             if(isBomb) {
                 setCellType('-bomb');
                 setClickedBomb(true);
