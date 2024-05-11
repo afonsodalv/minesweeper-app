@@ -4,7 +4,7 @@ import {Sprite} from '../../assets';
 import { countAdjacentBombs } from "../../helpers";
 
 
-function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore}){
+function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore, flagSquare}){
 
     const [cellType, setCellType] = useState('-init');
 
@@ -104,10 +104,17 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
 
         if(!clicked && x!==3) {
             setX(x+1);
-            (x+1) === 2 ? setCellType('-question') : setCellType('-init');
+            // (x+1) === 2 ? setCellType('-question') : setCellType('-init');
+            if((x+1) === 2) {
+                setCellType('-question');
+                flagSquare(id);
+            } else {
+                setCellType('-init');
+            }
         } else if(x===3) {
             setX(1);
             setCellType('-flag');
+            flagSquare(id);
         }
 
         handleGameScore(x);

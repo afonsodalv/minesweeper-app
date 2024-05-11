@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Timer({ isTimerActive, reset}) {
+function Timer({ startTimer, reset}) {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ function Timer({ isTimerActive, reset}) {
     }
 
     let interval = null;
-    if (isTimerActive) {
+    if (startTimer) {
       interval = setInterval(() => {
         setSeconds(seconds => seconds + 1);
       }, 1000);
@@ -18,7 +18,7 @@ function Timer({ isTimerActive, reset}) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isTimerActive, seconds, reset]);
+  }, [startTimer, seconds, reset]);
 
   return (
     <p>{seconds}</p>

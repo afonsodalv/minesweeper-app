@@ -5,30 +5,29 @@ import {Header, Footer, ControlPanel, GamePanel, WelcomePanel} from "./component
 function App() {
   const [gameActive, setGameActive]=useState(true);
   const [gameStarted, setGameStarted]=useState(false);
+  const [startTimer, setStartTimer]=useState(false);
+  const [gameWon, setGameWon]=useState(false);
   const [numBombs, setNumBombs] = useState(0);
   const [gameKey, setGameKey] = useState(0);
   const [score, setScore] = useState(0);
 
-  function handleGameEnd(x){
+  function handleGameEnd(gameWon){
       setGameActive(false);
-  
-      if(x===1)
+      setStartTimer(false);
+      if(gameWon===1)
         console.log("Ganhou");
       else
         console.log("Perdeu");
   }
 
+  // useRef Hook to keep track of the previous gameActive value
   const prevGameActiveRef = useRef(gameActive);
-  //foi a forma que consegui para que o Score
-  //fizessse reset quando o jogo recomeçava
-
-useEffect(() => {
-    if (!prevGameActiveRef.current && gameActive) {
-        setScore(numBombs);
-    }
-
-    prevGameActiveRef.current = gameActive;
-}, [gameActive]);
+  useEffect(() => {
+      if (!prevGameActiveRef.current && gameActive) {
+          setScore(numBombs);
+      }
+      prevGameActiveRef.current = gameActive;
+  }, [gameActive]);
 
   function handleGameStarted(){
     setGameStarted(!gameStarted);
@@ -72,8 +71,24 @@ useEffect(() => {
       <Header />
       {gameStarted ? (
       <>
-        <ControlPanel score={score} handleGameStarted={handleGameStarted} numBombs={numBombs} onResetGameKey={resetGameKey} handleGameEnd={handleGameEnd} gameActive={gameActive}/>
-        <GamePanel numBombs={numBombs} gameActive={gameActive} handleGameEnd={handleGameEnd} key={gameKey} handleGameScore={handleGameScore}/>
+        <ControlPanel 
+          score={score} 
+          numBombs={numBombs}
+          startTimer={startTimer} 
+          gameWon={gameWon}
+          handleGameStarted={handleGameStarted} 
+          onResetGameKey={resetGameKey} 
+          handleGameEnd={handleGameEnd} 
+          gameActive={gameActive}/>
+        <GamePanel 
+          key={gameKey} 
+          numBombs={numBombs} 
+          gameActive={gameActive} 
+          startTimer={startTimer}
+          setStartTimer={setStartTimer}
+          handleGameEnd={handleGameEnd} 
+          handleGameScore={handleGameScore}
+          setGameWon={setGameWon}/>
       </>) : (
       <WelcomePanel onGameStart={handleLevelChange} />)}
       <Footer />
