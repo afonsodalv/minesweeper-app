@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./square.css";
 import {Sprite} from '../../assets';
 import { countAdjacentBombs } from "../../helpers";
 
 
-function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb }){
+function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore}){
 
     const [cellType, setCellType] = useState('-init');
 
@@ -19,12 +19,18 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
         else if (cellType === '-flag') {
             background = `url(${Sprite}) -34px -51px`;
         } 
+        else if(cellType === '-wrongFlag'){
+            background = `url(${Sprite}) -119px -51px`;
+        }
         else if (cellType === '-question') {
             background = `url(${Sprite}) -51px -51px`;
         } 
         else if (cellType === '-bomb') {
             background = `url(${Sprite}) -102px -51px`;
         } 
+        else if (cellType === '-bombEnd'){
+            background = `url(${Sprite}) -85px -51px`;
+        }
         else if (cellType === '-clicked') {
             background = `url(${Sprite}) -17px -51px`;
         }
@@ -40,12 +46,26 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
 
     const [clicked, setClicked] = useState(false);
     const [x, setX] = useState(3);
+    
 
 
     if (revealed && !clicked) {
         handleLeftClick();
     }
 
+    useEffect(() => {
+        if (!gameActive && isBomb && !clicked) {
+            setCellType('-bombEnd');
+        }
+        if(!gameActive && !isBomb && cellType === '-flag'){
+            setCellType('-wrongFlag');
+        }
+        if(!gameActive && isBomb && cellType === '-flag'){
+            setCellType('-flag');
+        }
+    }, [gameActive]);
+
+  
     function handleLeftClick() {
         if (!gameActive) return;
         
@@ -54,23 +74,27 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
             revealed = true;
             const [row, col] = id.split('-').map(Number);
             const nBombs = countAdjacentBombs(row, col, bombs);
-            console.log(`Square component about to call countAdjacentBombs: ${row}, ${col} - ${nBombs} bombs nearby`);
+           // console.log(`Square component about to call countAdjacentBombs: ${row}, ${col} - ${nBombs} bombs nearby`);
+
             if(isBomb) {
                 setCellType('-bomb');
                 setClickedBomb(true);
             } else if(nBombs === 0) {
                 setCellType('-clicked');
+
                 if(!clicked) {
-                    console.log(`Square component about to call reveal square: ${row}, ${col}`);
+                    //console.log(`Square component about to call reveal square: ${row}, ${col}`);
                     setClicked(true);
-                    revealSquare(row, col);
+                    revealSquare(row, col, nBombs);
                 } 
 
             } else {
-                setCellType(nBombs);
+                if(!clicked){
+                    setCellType(nBombs);
+                    revealSquare(row, col, nBombs);
+                }
             }
             setClicked(true);
-            
         }
     }
 
@@ -85,6 +109,8 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
             setX(1);
             setCellType('-flag');
         }
+
+        handleGameScore(x);
     }
 
     return (
