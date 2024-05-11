@@ -6,7 +6,7 @@ import {HappyFace, SadFace, Reset} from "../../assets";
 import { getGameSettings } from "../../helpers";
 
 
-function ControlPanel({ score, handleGameStarted, numBombs, onResetGameKey, handleGameEnd, gameActive}) {
+function ControlPanel({ score, startTimer, handleGameStarted, numBombs, onResetGameKey, handleGameEnd, gameActive}) {
   const [currentImage, setCurrentImage] = useState(SadFace);
   const [resetGame, setResetGame] = useState(false);
   const [isTimerActive, setIsTimerActive] = useState(true);
@@ -69,7 +69,7 @@ function ControlPanel({ score, handleGameStarted, numBombs, onResetGameKey, hand
           </div>
 
           <dl className="control-panel-counters">
-            <dd id="gameTime" ><Timer isTimerActive={gameActive} reset={resetTimer}/></dd>
+            <dd id="gameTime" ><Timer startTimer={startTimer} reset={resetTimer}/></dd>
           </dl>
         </div>
         {resetGame && (
