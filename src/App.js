@@ -74,14 +74,14 @@ function App() {
 		{gameStarted ? (
 		<>
 			<ControlPanel 
-				score={score} 
 				numBombs={numBombs}
-				startTimer={startTimer} 
+				score={score} 
 				gameWon={gameWon}
+				gameActive={gameActive}
+				startTimer={startTimer} 
 				handleGameStarted={handleGameStarted} 
 				onResetGameKey={resetGameKey} 
 				handleGameEnd={handleGameEnd} 
-				gameActive={gameActive}
 			/>
 			<GamePanel 
 				key={gameKey} 

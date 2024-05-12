@@ -42,16 +42,16 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 		let isBomb = bombs.has(`${i}-${j}`);
 		board[i][j] = (
 			<Square 
+			key={`${i}-${j}`} 
 			gameActive={gameActive} 
 			gameWon={gameWon}
-			key={`${i}-${j}`} 
 			id={`${i}-${j}`} 
 			isBomb={isBomb} 
 			bombs={bombs}
 			revealed={revealed[i][j]}
-			handleGameScore={handleGameScore}
 			revealSquare={revealSquare}
 			setClickedBomb={setClickedBomb}
+			handleGameScore={handleGameScore}
 			flagSquare={flagSquare}
 			/>
 		);
