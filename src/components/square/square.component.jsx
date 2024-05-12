@@ -3,7 +3,7 @@ import "./square.css";
 import {Sprite} from '../../assets';
 import { countAdjacentBombs } from "../../helpers";
 
-function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore, flagSquare}){
+function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore, flagSquare, revealBBPressed}){
 
     // Initialize the cell type state with the default value '-init' and the setCellType function to update it accordingly
     const [cellType, setCellType] = useState('-init');
@@ -46,6 +46,7 @@ function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare,
     // Clicked will tracked whether the square has been clicked, and x will track the state of the square (0: clicked, 1: flag, 2: question mark 3: initial state)   
     const [clicked, setClicked] = useState(false);
     const [x, setX] = useState(3);
+    const [bothButtonsPressed, setBothButtonsPressed] = useState(false);
     
 
     // This condition is required for the recursive reveal of squares
@@ -75,42 +76,33 @@ function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare,
 
     
     function handleLeftClick() {
-        if (!gameActive) return;
+        if (bothButtonsPressed || !gameActive || (gameActive && clicked)) return;
         
         if(x!==1){
             setX(0);
             revealed = true;
             const [row, col] = id.split('-').map(Number);
             const nBombs = countAdjacentBombs(row, col, bombs);
-           // console.log(`Square component about to call countAdjacentBombs: ${row}, ${col} - ${nBombs} bombs nearby`);
 
             if(isBomb) {
                 setCellType('-bomb');
                 setClickedBomb(true);
             } else if(nBombs === 0) {
                 setCellType('-clicked');
-
-                if(!clicked) {
-                    //console.log(`Square component about to call reveal square: ${row}, ${col}`);
-                    setClicked(true);
-                    revealSquare(row, col, nBombs);
-                } 
-
+                revealSquare(row, col, nBombs);
             } else {
-                if(!clicked){
-                    setCellType(nBombs);
-                    revealSquare(row, col, nBombs);
-                }
+                setCellType(nBombs);
+                revealSquare(row, col, nBombs);
             }
             setClicked(true);
         }
     }
 
     function handleRightClick(event){
-        if (!gameActive) return;
         event.preventDefault();
+        if (bothButtonsPressed || !gameActive || (gameActive && clicked)) return;
 
-        if(!clicked && x!==3) {
+        if(x!==3) {
             setX(x+1);
             if((x+1) === 2) {
                 setCellType('-question');
@@ -126,8 +118,32 @@ function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare,
         handleGameScore(x);
     }
 
+
+    function handleBothButtonsClick(event) {
+        if (event.buttons === 3 && clicked) {
+            setBothButtonsPressed(true);
+        }
+    }
+
+    function handleMouseUp(event) {
+        if (event.buttons === 0 && bothButtonsPressed) {
+            setBothButtonsPressed(false);
+            const [row, col] = id.split('-').map(Number);
+            const nBombs = countAdjacentBombs(row, col, bombs);
+            revealBBPressed(row, col, nBombs);
+        }
+    }
+
+
     return (
-        <div className='square-blank' style={getCellBackground(cellType)} onClick={handleLeftClick} onContextMenu={handleRightClick}></div>
+        <div 
+            className='square-blank' 
+            style={getCellBackground(cellType)} 
+            onClick={handleLeftClick} 
+            onContextMenu={handleRightClick}
+            onMouseDown={handleBothButtonsClick}
+            onMouseUp={handleMouseUp}
+        ></div>
     );
 }
 

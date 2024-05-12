@@ -53,6 +53,7 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 			setClickedBomb={setClickedBomb}
 			handleGameScore={handleGameScore}
 			flagSquare={flagSquare}
+			revealBBPressed={revealBBPressed}
 			/>
 		);
 		}
@@ -98,6 +99,32 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 		});
 		//console.log(`Revealed Arr: ${revealed}`);
 	}
+    
+	// This function will reveal the adjacent squares on Both Mouse Buttons Click action
+	// if the numbers of flags match the clicked square number
+	function revealBBPressed(row, col, nBombs) {
+		const adjacentSquares = getAdjacentSquares(row, col, boardSize.rows, boardSize.cols);
+		//console.log(`Adjacent cells: ${adjacentSquares}`);
+		let count = 0;
+		adjacentSquares.forEach((square) => {
+			if(flags.has(square)) {
+				count++;
+			}
+		});
+		setRevealed(prevState => {
+		const newState = [...prevState];
+		if(nBombs===count){
+			adjacentSquares.forEach((square) => {
+			const [adjRow, adjCol] = square.split('-').map(Number);
+			if(flags.has(`${adjRow}-${adjCol}`)) return;
+			if (revealed[adjRow][adjCol] === false){
+				newState[adjRow][adjCol] = true;
+			}
+			});
+		}
+		return newState;
+		});
+	}
 
 
 					//GAME END LOGIC   >>>>>>
@@ -118,7 +145,7 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 		setGameWon(true);
 		handleGameEnd(true);
 		}
-		
+
 	}, [revealed, boardSize, clickedBomb, gameActive, numBombs, setGameWon, handleGameEnd]);
 
 					// <<<<<< GAME END LOGIC
