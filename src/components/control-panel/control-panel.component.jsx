@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./control-panel.css";
 import Timer from "../timer/timer.component";
-import {HappyFace, SadFace, Reset} from "../../assets";
 import {Sprite} from '../../assets';
 import { getGameSettings } from "../../helpers";
 
 
-function ControlPanel({ score, startTimer, handleGameStarted, gameWon, numBombs, onResetGameKey, handleGameEnd, gameActive}) {
-	const [currentImage, setCurrentImage] = useState(SadFace);
-	const [resetGame, setResetGame] = useState(false);
-	const [isTimerActive, setIsTimerActive] = useState(true);
+function ControlPanel({ numBombs, score, gameWon, gameActive, startTimer, handleGameStarted, onResetGameKey, handleGameEnd}) {
 	const [resetTimer, setResetTimer] = useState(false);
 	const [smile, setSmile] = useState('happy');
 
@@ -37,37 +33,18 @@ function ControlPanel({ score, startTimer, handleGameStarted, gameWon, numBombs,
 	}
 
 	function handleClick() {
-		// if (smile !== 'happy') {
-		//   setSmile('happy');
-		// }
-
-		setCurrentImage(currentImage === HappyFace ? SadFace : HappyFace);
-		if (currentImage === HappyFace) {
-		setResetGame(true);
-		setIsTimerActive(false);
-		handleGameEnd();
+		if (gameActive) {
+			handleGameEnd();
 		}
-		if (currentImage === SadFace) {
-		setResetGame(false);
-		setIsTimerActive(true);
-		setResetTimer(true);
-		onResetGameKey();
+		else {
+			setResetTimer(true);
+			onResetGameKey();
 		}
 	}
 
-	function handleReset() {
-		// so trabalha com img reset (painel que aparece quando se clica na cara)
-		setResetGame(false);
-		setCurrentImage(HappyFace);
-		setIsTimerActive(true);
-		setResetTimer(true);
-		onResetGameKey();
-	}
-
+	// Change level onclick function
 	function handleGoBack() {
-		// so trabalha com botao mudar de nivel (painel que aparece quando se clica na cara)
 		handleGameStarted();
-		setResetGame(false);
 	}
 
 	useEffect(() => {
@@ -91,36 +68,43 @@ function ControlPanel({ score, startTimer, handleGameStarted, gameWon, numBombs,
 	}, [gameActive]);
 
 	return (
-		<div id="back-control-panel">
-		<div className={`control-panel${getGameSettings(numBombs).difficulty}`}>
-			<div id="control-panel-row">
-			<dl className="control-panel-counters">
-				<dd id="points">{score}</dd>
-			</dl>
-			<div>
-				<div 
-				onClick={handleClick} 
-				className="smile-button"
-				style={getSmile(smile)}
-				alt="Be Happy!"
-				></div>
-			</div>
-
-			<dl className="control-panel-counters">
-				<dd id="gameTime" ><Timer startTimer={startTimer} reset={resetTimer}/></dd>
-			</dl>
-			</div>
-			{resetGame && (
-			<div id="control-reset">
-				<button onClick={handleReset} className="control-button-reset">
-				<img src={Reset} alt="Reset game" />
-				</button>
+		<div id="game-controls">
+			
+			{/* {resetGame && ( */}
+			<>
+				{/* <button onClick={handleReset} className="control-button-reset">
+					<img src={Reset} alt="Reset game" />
+				</button> */}
 				<button onClick={handleGoBack} className="control-button-level">
 					Mudar de nível
 				</button>
+			</>
+			{/* )} */}
+			<div id="back-control-panel">
+
+				<div className={`control-panel${getGameSettings(numBombs).difficulty}`}>
+					<div id="control-panel-row">
+						
+						<dl className="control-panel-counters">
+							<dd id="points">{score}</dd>
+						</dl>
+
+						<div>
+							<div 
+							onClick={handleClick} 
+							className="smile-button"
+							style={getSmile(smile)}
+							alt="Be Happy!"
+							></div>
+						</div>
+
+						<dl className="control-panel-counters">
+							<dd id="gameTime" ><Timer startTimer={startTimer} reset={resetTimer}/></dd>
+						</dl>
+
+					</div>
+				</div>
 			</div>
-			)}
-		</div>
 		</div>
 	);
 }
