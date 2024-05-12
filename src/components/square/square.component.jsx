@@ -3,11 +3,10 @@ import "./square.css";
 import {Sprite} from '../../assets';
 import { countAdjacentBombs } from "../../helpers";
 
+function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore, flagSquare}){
 
-function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClickedBomb, handleGameScore, flagSquare}){
-
+    // Initialize the cell type state with the default value '-init' and the setCellType function to update it accordingly
     const [cellType, setCellType] = useState('-init');
-
     const getCellBackground = (cellType) => {
         let background;
         if (typeof cellType === 'number') {
@@ -43,19 +42,27 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
         };
     };
 
-
+    // Initialization of the clicked and x states. 
+    // Clicked will tracked whether the square has been clicked, and x will track the state of the square (0: clicked, 1: flag, 2: question mark 3: initial state)   
     const [clicked, setClicked] = useState(false);
     const [x, setX] = useState(3);
     
 
-
+    // This condition is required for the recursive reveal of squares
     if (revealed && !clicked) {
         handleLeftClick();
     }
 
+    // This effect will update the board when the game is over, efectively revealing all the bombs (game lost) or flags (game won)
     useEffect(() => {
         if (!gameActive && isBomb && !clicked) {
-            setCellType('-bombEnd');
+            if(gameWon){
+                setCellType('-flag');
+                handleGameScore(0);
+            } 
+            else {
+                setCellType('-bombEnd');
+            }
         }
         if(!gameActive && !isBomb && cellType === '-flag'){
             setCellType('-wrongFlag');
@@ -65,7 +72,7 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
         }
     }, [gameActive]);
 
-  
+    
     function handleLeftClick() {
         if (!gameActive) return;
         
@@ -104,7 +111,6 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
 
         if(!clicked && x!==3) {
             setX(x+1);
-            // (x+1) === 2 ? setCellType('-question') : setCellType('-init');
             if((x+1) === 2) {
                 setCellType('-question');
                 flagSquare(id);
@@ -116,7 +122,6 @@ function Square({gameActive, id, isBomb, bombs, revealed, revealSquare, setClick
             setCellType('-flag');
             flagSquare(id);
         }
-
         handleGameScore(x);
     }
 
