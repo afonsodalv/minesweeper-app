@@ -102,21 +102,24 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 
 					//GAME END LOGIC   >>>>>>
 	
-	useEffect(() => {              
-		if (clickedBomb && gameActive) {
+	useEffect(() => {
+		if (!gameActive) return;
+
+		// Logic for when a bomb is clicked
+		if (clickedBomb) {
 		setGameWon(false);
 		handleGameEnd(false);
+		return;
 		}  
-	}, [clickedBomb, gameActive, setGameWon, handleGameEnd]);  
-		
 
-	useEffect(() => {
+		// Logic for when all non-bomb squares are revealed
 		const revealedCount = revealed.flat().filter(Boolean).length;
 		if (revealedCount === boardSize.rows * boardSize.cols - numBombs) {
 		setGameWon(true);
 		handleGameEnd(true);
 		}
-	}, [revealed, boardSize, numBombs, setGameWon, handleGameEnd]);
+		
+	}, [revealed, boardSize, clickedBomb, gameActive, numBombs, setGameWon, handleGameEnd]);
 
 					// <<<<<< GAME END LOGIC
 

@@ -70,6 +70,7 @@ function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare,
         if(!gameActive && isBomb && cellType === '-flag'){
             setCellType('-flag');
         }
+        //eslint-disable-next-line
     }, [gameActive]);
 
     
