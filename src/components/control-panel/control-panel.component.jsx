@@ -65,6 +65,7 @@ function ControlPanel({ numBombs, score, gameWon, gameActive, startTimer, handle
 		else if(gameActive) {
 			setSmile('happy');
 		}
+		// eslint-disable-next-line
 	}, [gameActive]);
 
 	return (
