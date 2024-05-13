@@ -26,7 +26,7 @@ function ControlPanel({ numBombs, score, gameWon, gameActive, startTimer, handle
 		return {
 		width: '25px',
 		height: '25px',
-		zoom: '1.5',
+		zoom: '1.0',
 		backgroundImage: `url(${Sprite})`,
 		backgroundPosition,
 		};
@@ -76,12 +76,12 @@ function ControlPanel({ numBombs, score, gameWon, gameActive, startTimer, handle
 				{/* <button onClick={handleReset} className="control-button-reset">
 					<img src={Reset} alt="Reset game" />
 				</button> */}
-				<button onClick={handleGoBack} className="control-button-level">
+				<button onClick={handleGoBack} className="button-level">
 					Mudar de nível
 				</button>
 			</>
 			{/* )} */}
-			<div id="back-control-panel">
+			<div id="back-control-panel" >
 
 				<div className={`control-panel${getGameSettings(numBombs).difficulty}`}>
 					<div id="control-panel-row">

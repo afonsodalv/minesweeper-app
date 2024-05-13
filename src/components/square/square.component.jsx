@@ -37,7 +37,7 @@ function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare,
         return {
             width: '16px',
             height: '16px',
-            zoom: '1.5',
+            zoom: '1.2',
             background,
         };
     };
