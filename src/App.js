@@ -70,31 +70,47 @@ function App() {
 
 	return (
 		<div className="container">
-		<Header />
-		{gameStarted ? (
-		<>
-			<ControlPanel 
-				score={score} 
-				numBombs={numBombs}
-				startTimer={startTimer} 
-				gameWon={gameWon}
-				handleGameStarted={handleGameStarted} 
-				onResetGameKey={resetGameKey} 
-				handleGameEnd={handleGameEnd} 
-				gameActive={gameActive}
-			/>
-			<GamePanel 
-				key={gameKey} 
-				numBombs={numBombs} 
-				gameActive={gameActive} 
-				startTimer={startTimer}
-				setStartTimer={setStartTimer}
-				handleGameEnd={handleGameEnd} 
-				handleGameScore={handleGameScore}
-				gameWon={gameWon}
-				setGameWon={setGameWon}
-			/>
-		</>) : (
+			<Header />
+			{gameStarted ? (
+			<>
+				<div className="window">
+					<div className="title-bar">
+						<div className="title-bar-text">MineSweeper</div>
+						<div className="title-bar-controls">
+						<button aria-label="Minimize"></button>
+						<button aria-label="Maximize"></button>
+						<button aria-label="Close"></button>
+						</div>
+					</div>
+					<div className = "game-container">
+						<div className='control-panel-container'>
+							<ControlPanel 
+								numBombs={numBombs}
+								score={score} 
+								gameWon={gameWon}
+								gameActive={gameActive}
+								startTimer={startTimer} 
+								handleGameStarted={handleGameStarted} 
+								onResetGameKey={resetGameKey} 
+								handleGameEnd={handleGameEnd} 
+							/>
+						</div>
+						<div className='game-panel-container'>
+							<GamePanel 
+								key={gameKey} 
+								numBombs={numBombs} 
+								gameActive={gameActive} 
+								startTimer={startTimer}
+								setStartTimer={setStartTimer}
+								handleGameEnd={handleGameEnd} 
+								handleGameScore={handleGameScore}
+								gameWon={gameWon}
+								setGameWon={setGameWon}
+							/>
+						</div>
+					</div>
+				</div>
+			</>) : (
 			<WelcomePanel 
 				onGameStart={handleLevelChange} 
 			/>)}
