@@ -8,7 +8,7 @@ In the project directory, you can run:
 
 ### `npm install`
 
-Installs all relative node-js deendencies for the project.
+Installs all relative node-js dependencies for the project.
 
 ### `npm start`
 
