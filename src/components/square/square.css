@@ -4,28 +4,3 @@
   justify-content: center;
   align-items: center;
 }
-  
-.square-blank {
-  width: 20px;
-  height: 20px;
-  background-color: gray;
-  /* border: 1px solid rgba(69, 69, 233, 0.849); */
-}
-
-.square-btInit {
-  width: 16px;
-  height: 16px;
-  object-fit: cover;
-}
-
-.square-flag{
-  width: 16px;
-  height: 16px;
-  object-fit: cover;
-}
-
-.square-question{
-  width: 16px;
-  height: 16px;
-  object-fit: cover;
-}
