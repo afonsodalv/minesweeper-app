@@ -115,7 +115,6 @@ function App() {
 			<WelcomePanel 
 				onGameStart={handleLevelChange} 
 			/> 
-			<Footer />
 			</>)}
 	
 		</div>
