@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './assets/styles/App.css';
-import {Header, Footer, ControlPanel, GamePanel, WelcomePanel} from "./components";
+import {ControlPanel, GamePanel, WelcomePanel} from "./components";
 
 function App() {
 	const [gameActive, setGameActive]=useState(true);
@@ -69,8 +69,8 @@ function App() {
 	}
 
 	return (
+	
 		<div className="container">
-			<Header />
 			{gameStarted ? (
 			<>
 				<div className="window">
@@ -111,10 +111,12 @@ function App() {
 					</div>
 				</div>
 			</>) : (
+			<>
 			<WelcomePanel 
 				onGameStart={handleLevelChange} 
-			/>)}
-			<Footer />
+			/> 
+			</>)}
+	
 		</div>
 	);
 }

@@ -71,16 +71,11 @@ function ControlPanel({ numBombs, score, gameWon, gameActive, startTimer, handle
 	return (
 		<div id="game-controls">
 			
-			{/* {resetGame && ( */}
 			<>
-				{/* <button onClick={handleReset} className="control-button-reset">
-					<img src={Reset} alt="Reset game" />
-				</button> */}
 				<button onClick={handleGoBack} className="button-level">
 					Mudar de nível
 				</button>
 			</>
-			{/* )} */}
 			<div id="back-control-panel" >
 
 				<div className={`control-panel${getGameSettings(numBombs).difficulty}`}>
