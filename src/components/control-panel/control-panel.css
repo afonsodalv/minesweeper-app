@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Minesweeper';
-  src: url('../../assets/fonts/mine-sweeper.otf');
+  src: url('../../assets/fonts/digital-7.ttf');
 }
 
 .button-level{
@@ -25,7 +25,8 @@
   font-family: 'Minesweeper';
   background-color: black;
   color: red;
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-size: 28px;
   width: 60px;
   height: 25px;
   display: flex;

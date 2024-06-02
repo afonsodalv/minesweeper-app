@@ -15,7 +15,6 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 	useEffect(() => {
 		setBoardSize(getGameSettings(numBombs));
 	}, [numBombs]);
-	// const boardSize = getGameSettings(numBombs);
 	// console.log(`Bombs: ${numBombs} - Board Size: ${boardSize.rows}, ${boardSize.cols}`);
 
 	// This effect will generate the bombs when the game starts
@@ -59,7 +58,8 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 		}
 	}
   
-	// This function will flag or unflag a square. It is passed as a prop to the Square component and is called when the right mouse button is clicked.
+	// This function will flag or unflag a square. It is passed as a prop to the Square component 
+	// and is called when the right mouse button is clicked.
 	function flagSquare(id) {
 		if (flags.has(id)) {
 		setFlags(prevState => {
@@ -153,11 +153,6 @@ function GamePanel({numBombs, gameActive, startTimer, setStartTimer, handleGameE
 
   return (
     <div className="game-panel">
-    {/* {board.map((row, i) => (
-      <div key={i}>
-        {row}
-      </div>
-    ))} */}
     {board[0].map((col, i) => (
       <div key={i}>
         {board.map(row => row[i])}

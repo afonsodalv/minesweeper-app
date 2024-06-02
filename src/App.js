@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './assets/styles/App.css';
-import {Header, Footer, ControlPanel, GamePanel, WelcomePanel} from "./components";
+import {ControlPanel, GamePanel, WelcomePanel} from "./components";
 
 function App() {
 	const [gameActive, setGameActive]=useState(true);

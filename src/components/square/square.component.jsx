@@ -29,7 +29,7 @@ function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare,
         } 
         else if (cellType === '-bombEnd'){
             background = `url(${Sprite}) -85px -51px`;
-        }
+        } 
         else if (cellType === '-clicked') {
             background = `url(${Sprite}) -17px -51px`;
         }
@@ -43,7 +43,8 @@ function Square({gameActive, gameWon, id, isBomb, bombs, revealed, revealSquare,
     };
 
     // Initialization of the clicked and x states. 
-    // Clicked will tracked whether the square has been clicked, and x will track the state of the square (0: clicked, 1: flag, 2: question mark 3: initial state)   
+    // Clicked will tracked whether the square has been clicked, and x will track the state of the square
+    // (0: clicked, 1: flag, 2: question mark 3: initial state)   
     const [clicked, setClicked] = useState(false);
     const [x, setX] = useState(3);
     const [bothButtonsPressed, setBothButtonsPressed] = useState(false);
