@@ -29,6 +29,7 @@ function WelcomePanel({ onGameStart }) {
 			<button type="button" className="welcome-button" onClick={() => onGameStart(1)}>Básico (9x9)</button>
 			<button type="button" className="welcome-button" onClick={() => onGameStart(2)}>Intermédio (16x16)</button>
 			<button type="button" className="welcome-button" onClick={() => onGameStart(3)}>Avançado (30x16)</button>
+      <p>LS© D E I S @ I S E C</p>
 		</div>
   	</div>
   );

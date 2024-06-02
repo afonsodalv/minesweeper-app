@@ -1,8 +1,29 @@
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+
+#root{
+  background-image: url('../images/windows.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: fit-content;
+  height: 100vh;
+  width: 100vw;
+  border: blue 2px solid;  
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  width: 100%;
+
 }
 
 .window {
@@ -18,11 +39,11 @@
   box-shadow: inset 1px 1px #0a0a0a, inset -1px -1px #dfdfdf, inset 2px 2px grey, inset -2px -2px #fff;
   padding: 3px;
   margin: 5px;
-}
 
+}
 @media (max-width: 640px) {
   body {
       min-width: 640px;
-      overflow-x: auto;
+      overflow: hidden;
   }
 }

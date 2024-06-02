@@ -69,8 +69,8 @@ function App() {
 	}
 
 	return (
+	
 		<div className="container">
-			<Header />
 			{gameStarted ? (
 			<>
 				<div className="window">
@@ -111,10 +111,12 @@ function App() {
 					</div>
 				</div>
 			</>) : (
+			<>
 			<WelcomePanel 
 				onGameStart={handleLevelChange} 
-			/>)}
-			<Footer />
+			/> 
+			</>)}
+	
 		</div>
 	);
 }
