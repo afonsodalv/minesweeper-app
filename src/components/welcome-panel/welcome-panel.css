@@ -9,7 +9,7 @@
 .window-body p {
     font-size: 1.2em;
     font-weight: bold;
-    margin: 15px 0;
+    text-align: center;
 }
 
 .welcome-button {
